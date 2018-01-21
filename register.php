@@ -19,7 +19,7 @@ $user->register($_POST);
                 </div>
                 <div class="panel-body">
                     <!-- <div class="col-lg-10 col-lg-offset-1"></div>
-<!--                    <form class="form-horizontal">-->
+                    <form class="form-horizontal">-->
                     <form action="/register.php" method="POST">
                         <div class="form-group">
                             <label for="name">Name</label>
