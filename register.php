@@ -13,21 +13,27 @@ $user->register($_POST);
     <div class="row">
 
         <div class="col-lg-8 col-lg-offset-2">
+            <?php
+                if ($flash->hasMessages($flash::ERROR)) {
+                    $flash->display();
+                }
+            ?>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Panel title</h3>
                 </div>
                 <div class="panel-body">
                     <!-- <div class="col-lg-10 col-lg-offset-1"></div>
-                    <form class="form-horizontal">-->
+<!--                    <form class="form-horizontal">-->
                     <form action="/register.php" method="POST">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Name ...">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name ..." value="<?= old('name') ?>">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="email ...">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="email ..." value="<?= old('email') ?>">
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
