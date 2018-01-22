@@ -1,8 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Helper\Validation;
-
-class UserController
+class UserController extends Controller
 {
    public function register()
    {
@@ -16,13 +14,8 @@ class UserController
            'confirm_password' => 'required|confirm:password'
        ];
 
-       $validation = new validation();
-       $valid = $validation->make($_POST, $rules);
-       print_r($validation->getErrors()); die;
-
-       if(!$valid) {
-           var_dump($validation->getErrors());die;
-       }
-       var_dump($_POST);die;
+        if (! $this->validation($_POST, $rules)) {
+            return;
+        }
    }
 }
