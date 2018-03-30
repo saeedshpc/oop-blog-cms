@@ -12,20 +12,19 @@ class Controller
         $this->flash = new FlashMessages();
     }
 
-    public function validation($data, $rules)
+    public function validation($data , $rules)
     {
-        $validation = new validation();
+        $validation = new Validation();
 
-        $valid = $validation->make($_POST, $rules);
+        $valid = $validation->make($data , $rules);
 
         if(! $valid) {
-            foreach($validation->getErrors() as $error) {
+            foreach ($validation->getErrors() as $error) {
                 $this->flash->error($error[0]);
             }
             return false;
         }
 
         return true;
-
     }
 }
