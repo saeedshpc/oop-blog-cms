@@ -1,4 +1,3 @@
-
 <!-- jQuery -->
 <script src="/public/js/jquery.js"></script>
 

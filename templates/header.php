@@ -1,8 +1,7 @@
 <?php
-
 include __DIR__ . "/../bootstrap/autoload.php";
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,14 +13,13 @@ include __DIR__ . "/../bootstrap/autoload.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>My Blog | OOP CMS</title>
+    <title>Blog Home - Start Bootstrap Template</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/public/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="/public/css/blog-home.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -37,7 +35,7 @@ include __DIR__ . "/../bootstrap/autoload.php";
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">My Blog</a>
+            <a class="navbar-brand" href="/">Saeed</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -53,9 +51,18 @@ include __DIR__ . "/../bootstrap/autoload.php";
                 </li>
             </ul>
 
-            <div class="btn-group" style="margin-top:8px; float:right">
-                <a href="/login.php" class="btn btn-success">Login</a>
-                <a href="/register.php" class="btn btn-danger">Register</a>
+            <div class="btn-group" style="margin: 8px;float: right">
+                <?php if(!checkLogin()) : ?>
+                    <a href="/login.php" class="btn btn-success">Login</a>
+                    <a href="/register.php" class="btn btn-danger">Register</a>
+                <?php else : ?>
+                    <?php if(checkAdmin()) : ?>
+                        <a href="/admin" class="btn btn-info">Admin Panel</a>
+                    <?php endif; ?>
+                    <a href="/user-panel.php" class="btn btn-success">Panel</a>
+                    <a href="/logout.php" class="btn btn-danger">Logout</a>
+                <?php endif; ?>
+
             </div>
         </div>
         <!-- /.navbar-collapse -->
