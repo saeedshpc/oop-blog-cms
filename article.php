@@ -1,6 +1,6 @@
 <?php
-    require('./templates/header.php');
-    $articles = ( new \App\Controller\HomeController())->index();
+require('./templates/header.php');
+$article = ( new \App\Controller\HomeController())->singleArticle();
 
 ?>
 
@@ -13,12 +13,6 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
 
-            <h1 class="page-header">
-                Page Heading
-                <small>Secondary Text</small>
-            </h1>
-
-            <?php foreach ($articles as $article) : ?>
                 <!-- First Blog Post -->
                 <h2>
                     <a href="/article.php?id=<?= $article->id ?>"><?= $article->title ?></a>
@@ -31,12 +25,7 @@
                 <hr>
                 <img class="img-responsive" src="http://placehold.it/900x300" alt="">
                 <hr>
-                <p><?= substr($article->body , 0 , 150) ?></p>
-                <a class="btn btn-primary" href="/article.php?id=<?= $article->id ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                <hr>
-            <?php endforeach; ?>
-
+                <p><?= $article->body ?></p>
 
         </div>
 
