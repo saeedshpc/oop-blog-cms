@@ -1,8 +1,7 @@
-<?php
+<?php namespace App\Model;
 
-namespace App\Model;
 
 class Users extends DB
 {
-    protected $table = "users";
+    protected $table = 'users';
 }

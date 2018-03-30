@@ -1,20 +1,21 @@
 {
-    "name": "saeed/project3",
+    "name": "roocket/oop",
     "authors": [
         {
-            "name": "Saeed Sheikholeslami",
-            "email": "saeed.shpc@gmail.com"
+            "name": "Hesam Mousavi",
+            "email": "Hesammoousavi@gmail.com"
         }
     ],
     "autoload" : {
-        "files": [
-          "app/functions.php"
+        "files":[
+            "app/functions.php"
         ],
         "psr-4" : {
-            "App\\": "app/"
+            "App\\" : "app/"
         }
     },
     "require": {
-        "plasticbrain/php-flash-messages": "^1.0"
+        "plasticbrain/php-flash-messages": "^1.0",
+        "nesbot/carbon": "^1.22"
     }
 }

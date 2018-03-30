@@ -1,9 +1,7 @@
 <?php
-require("./templates/header.php");
-$user = new \App\Controller\UserController();
-$user->register($_POST);
-
-
+    require('./templates/header.php');
+    $user = new \App\Controller\UserController();
+    $user->register();
 ?>
 
 
@@ -13,38 +11,44 @@ $user->register($_POST);
     <div class="row">
 
         <div class="col-lg-8 col-lg-offset-2">
+
             <?php
-                if ($flash->hasMessages($flash::ERROR)) {
+                if($flash->hasMessages($flash::ERROR)) {
                     $flash->display();
                 }
             ?>
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Panel title</h3>
+                    <h3 class="panel-title">Register Page</h3>
                 </div>
                 <div class="panel-body">
-                    <!-- <div class="col-lg-10 col-lg-offset-1"></div>
-<!--                    <form class="form-horizontal">-->
-                    <form action="/register.php" method="POST">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Name ..." value="<?= old('name') ?>">
+                    <div class="row">
+                        <div class="col-lg-10 col-lg-offset-1">
+                            <form class="form-horizontal" action="/register.php" method="post">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" name="name" placeholder="Name" value="<?= old('name') ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label >Email</label>
+                                    <input type="email" class="form-control" name="email" placeholder="Email ..." value="<?= old('email') ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label >Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="Password ..." value="<?= old('password') ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label >Password</label>
+                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password ..." value="<?= old('confirm_password') ?>">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-default">Register</button>
+
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="email ..." value="<?= old('email') ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm_password">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,4 +71,3 @@ $user->register($_POST);
 
 </div>
 <!-- /.container -->
-
