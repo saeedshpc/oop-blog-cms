@@ -1,12 +1,11 @@
 <?php namespace App\Controller\Admin;
 
-
+use App\Model\Articles;
 use App\Helper\Auth;
-use App\Model\Article;
 use Carbon\Carbon;
 
-class ArticleController extends AdminController
-{
+class ArticleController extends AdminController {
+
     public function create()
     {
         if(!request()->isPost())
@@ -17,15 +16,15 @@ class ArticleController extends AdminController
             'body' => 'required'
         ];
 
-        if(! $this->validation(request()->all() , $rules)) {
+        if (!$this->validation(request()->all(), $rules)) {
             return;
         }
 
-        (new Article())->create([
+        (new Articles())->create([
             'title' => request('title'),
             'body' => request('body'),
             'user_id' => Auth::user()->id,
-            'created_at' => Carbon::now()
+            'created_at' => carbon::now()
         ]);
 
         redirect('/admin');
@@ -36,16 +35,16 @@ class ArticleController extends AdminController
         if(empty(request('id')))
             redirect('/admin');
 
-        (new Article())->delete(request('id'));
+        (new Articles())->delete(request('id'));
         redirect('/admin');
     }
 
     public function edit()
     {
-        if(empty(request('id')))
+        if (empty(request('id')))
             redirect('/admin');
 
-        return (new Article())->find('id' , request('id'));
+        return (new Articles())->find('id', request('id'));
     }
 
     public function update($articleId)
@@ -55,16 +54,16 @@ class ArticleController extends AdminController
             'body' => 'required'
         ];
 
-        if(! $this->validation(request()->all() , $rules)) {
+        if (! $this->validation(request()->all(), $rules)) {
+            redirect('edit.php?id='. request('article_id'));
             return;
         }
 
-        (new Article())->update($articleId , [
+        (new Articles())->update($articleId, [
             'title' => request('title'),
             'body' => request('body')
         ]);
 
         redirect('/admin');
     }
-
 }

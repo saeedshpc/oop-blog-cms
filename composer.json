@@ -1,13 +1,13 @@
 {
-    "name": "roocket/oop",
+    "name": "saeed/oop",
     "authors": [
         {
-            "name": "Hesam Mousavi",
-            "email": "Hesammoousavi@gmail.com"
+            "name": "Farid Pourtahmasi",
+            "email": "farid@gmail.com"
         }
     ],
     "autoload" : {
-        "files":[
+        "files" : [
             "app/functions.php"
         ],
         "psr-4" : {
@@ -16,6 +16,6 @@
     },
     "require": {
         "plasticbrain/php-flash-messages": "^1.0",
-        "nesbot/carbon": "^1.22"
+        "nesbot/carbon": "^1.25"
     }
 }

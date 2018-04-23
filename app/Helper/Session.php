@@ -1,6 +1,5 @@
 <?php namespace App\Helper;
 
-
 use App\Contracts\DataInterface;
 
 class Session implements DataInterface
@@ -12,7 +11,7 @@ class Session implements DataInterface
      */
     public function exists($key)
     {
-        return array_key_exists($key , $_SESSION);
+        return array_key_exists($key, $_SESSION);
     }
 
     /**

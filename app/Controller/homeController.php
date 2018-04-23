@@ -1,13 +1,17 @@
 <?php namespace App\Controller;
 
-use App\Model\DB;
+use App\Model\Articles;
 use App\Model\Users;
 
-class homeController
+class HomeController
 {
     public function index()
     {
-        $db = new Users();
-        var_dump($db->select());
+        return (new Articles)->all();
+    }
+
+    public function singleArticle()
+    {
+        return (new Articles())->find('id', request('id'));
     }
 }

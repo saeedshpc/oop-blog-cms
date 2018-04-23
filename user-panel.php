@@ -1,34 +1,47 @@
 <?php
     require('./templates/header.php');
-    if(!checkLogin())
-        redirect();
+
+    (new \App\Controller\MemberController())->changePassword();
 ?>
 
+<div id="content">
+    <div class="errors-area">
 
-<!-- Page Content -->
-<div class="container">
-
-    <div class="row">
-
-        <div class="col-lg-8 col-lg-offset-2">
-            <h3>User Panel</h3>
-        </div>
+        <?php
+        if ($flash->hasMessages($flash::ERROR)) {
+            $flash->display();
+        }
+        ?>
 
     </div>
-    <!-- /.row -->
 
-    <hr>
-
-    <!-- Footer -->
-    <footer>
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; Your Website 2014</p>
-            </div>
-            <!-- /.col-lg-12 -->
+    <div class="panel">
+        <div class="panel-header">
+            <h3>Change Password</h3>
         </div>
-        <!-- /.row -->
-    </footer>
+        <div class="panel-body">
+            <form action="/user-panel.php" method="POST">
 
+                <div class="form-item">
+                    <label for="old_password">Old Password</label>
+                    <input type="password" id="old_password" name="old_password" placeholder="Old Password...">
+                </div>
+                <div class="form-item">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password...">
+                </div>
+                <div class="form-item">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Retype Password...">
+                </div>
+
+
+                <div class="form-item">
+                    <button type="submit">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-<!-- /.container -->
+
+<?php require("./templates/footer.php"); ?>

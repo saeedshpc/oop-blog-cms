@@ -1,6 +1,5 @@
 <?php namespace App\Helper;
 
-
 use App\Contracts\DataInterface;
 
 class Cookie implements DataInterface
@@ -12,7 +11,7 @@ class Cookie implements DataInterface
      */
     public function exists($key)
     {
-        return array_key_exists($key , $_COOKIE);
+        return array_key_exists($key, $_COOKIE);
     }
 
     /**
@@ -21,7 +20,7 @@ class Cookie implements DataInterface
      */
     public function get($key)
     {
-        return $this->exists($key) ? $_COOKIE[$key] : false ;
+       return $this->exists($key) ? $_COOKIE[$key] : false;
     }
 
     /**
@@ -30,9 +29,9 @@ class Cookie implements DataInterface
      * @param string $time
      * @return mixed
      */
-    public function set($key, $value , $time = '+30 day')
+    public function set($key, $value, $time = '+30 day')
     {
-        setcookie($key , $value , strtotime($time));
+        setcookie($key, $value, strtotime($time));
     }
 
     /**
@@ -41,6 +40,6 @@ class Cookie implements DataInterface
      */
     public function forget($key)
     {
-        setcookie($key , '' , strtotime('-5 day'), '/');
+        setcookie($key, '', strtotime('-2 day'), '/');
     }
 }

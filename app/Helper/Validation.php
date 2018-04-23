@@ -8,50 +8,49 @@ class Validation
      * @var
      */
     private $errors;
-
     /**
      * @var
      */
     private $data;
+
 
     /**
      * @param array $data
      * @param array $rules
      * @return bool
      */
-    public function make(Array $data , Array $rules)
+    public function make(Array $data, Array $rules)
     {
         $valid = true;
-
         $this->data = $data;
 
+        foreach ($rules as $item => $ruleset) {
+            $ruleset = explode("|", $ruleset);
 
-        foreach ($rules as $item => $ruleset ) {
-            $ruleset = explode('|' , $ruleset);
+            foreach($ruleset as $rule) {
+               $pos = strpos($rule, ":");
 
-            foreach ( $ruleset as $rule) {
-                $pos = strpos($rule , ":");
+               if ($pos !== false) {
+                   $parametr = substr($rule, $pos + 1);
+                   $rule = substr($rule, 0, $pos);
+               } else {
+                   $parametr = "";
+               }
 
-                if($pos !== false) {
-                    $parametr = substr($rule,$pos+1);
-                    $rule = substr($rule , 0 , $pos);
-                } else {
-                    $parametr = "";
-                }
+               $MethodName = ucfirst($rule);
 
-                $MethodName = ucfirst($rule);
+               $value = isset($data[$item]) ? $data[$item] : null;
 
-                $value = isset($data[$item]) ? $data[$item] : null;
 
-                if(method_exists($this,$MethodName)) {
-                    if($this->{$MethodName}($item,$value,$parametr) == false) {
-                        $valid = false;
-                        break;
-                    }
-                }
-
+               if(method_exists($this, $MethodName)) {
+                   if($this->{$MethodName}($item, $value, $parametr) == false) {
+                       $valid = false;
+                       break;
+                   }
+               }
             }
         }
+
         return $valid;
     }
 
@@ -68,10 +67,10 @@ class Validation
      * @param $value
      * @return bool
      */
-    private function required($item , $value)
+    private function Required($item, $value)
     {
         if(strlen($value) == 0) {
-            $this->errors[$item][] = "پرکردن فیلد {$item} الزامیست";
+            $this->errors[$item][] = "Please fill the {$item} field";
             return false;
         }
         return true;
@@ -82,15 +81,14 @@ class Validation
      * @param $value
      * @return bool
      */
-    private function email($item , $value)
+    private function Email($item, $value)
     {
-        if(!filter_var($value , FILTER_VALIDATE_EMAIL)) {
-            $this->errors[$item][] = "فرمت ایمیل وارد شده صحیح نیست";
+        if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            $this->errors[$item][] = "The Email Format is incorrect";
             return false;
         }
         return true;
     }
-
 
     /**
      * @param $item
@@ -98,10 +96,26 @@ class Validation
      * @param $param
      * @return bool
      */
-    private function min($item , $value , $param)
+    private function Min($item, $value, $param)
     {
         if (strlen($value) < $param) {
-            $this->errors[$item][] = "طول فیلد {$item} کمتر از {$param} کاراکتر است ";
+            $this->errors[$item][] = "The length of {$item} can't be less than {$param} characters!";
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * @param $item
+     * @param $value
+     * @param $param
+     * @return bool
+     */
+    private function Max($item, $value, $param)
+    {
+        if (strlen($value) > $param) {
+            $this->errors[$item][] = "The length of {$item} can't be more than {$param} characters";
             return false;
         }
         return true;
@@ -113,30 +127,19 @@ class Validation
      * @param $param
      * @return bool
      */
-    private function max($item , $value , $param)
+    private function Confirm($item, $value, $param)
     {
-        if (strlen($value) > $param) {
-            $this->errors[$item][] = "طول فیلد {$item} نمیتواند بیشتر از {$param} کراکتر باشد";
-            return false;
-        }
-        return true;
-    }
-
-    private function confirm($item , $value , $param)
-    {
-        $orginal = isset($this->data[$item]) ? $this->data[$item] : null ;
+        $orginal = isset($this->data[$item]) ? $this->data[$item] : null;
         $confirm = isset($this->data[$param]) ? $this->data[$param] : null;
 
-        if($orginal !== $confirm) {
-            $this->errors[$item][] = "فیلد {$item} با فیلد {$param} برابر نیست";
+        if ($orginal !== $confirm) {
+            $this->errors[$item][] = "{$item} is not equal with {$param}";
             return false;
         }
-
         return true;
-
     }
 
-    public function unique($item , $value , $param)
+    private function Unique($item, $value, $param)
     {
         $db = new DB();
 
@@ -145,10 +148,12 @@ class Validation
 
         $db->from($param);
 
-        if($db->find($item , $value) != false) {
-            $this->errors[$item][] = "مقدار {$item} تکراری میباشد";
+        if ($db->find($item, $value) != false) {
+            $this->errors[$item][] = "This Email is already registered!";
             return false;
         }
         return true;
     }
+
+
 }

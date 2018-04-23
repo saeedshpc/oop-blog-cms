@@ -1,6 +1,5 @@
 <?php namespace App\Contracts;
 
-
 interface AuthInterface
 {
     /**
@@ -8,7 +7,7 @@ interface AuthInterface
      * @param bool $remember
      * @return mixed
      */
-    public static function login($user , $remember = false);
+    public static function login($user, $remember = false);
 
     /**
      * @return mixed

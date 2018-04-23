@@ -1,85 +1,33 @@
 <?php
-    require('./templates/header.php');
-    $articles = ( new \App\Controller\HomeController())->index();
-
+    require("./templates/header.php");
+    $articles = (new \App\Controller\HomeController())->index();
 ?>
 
 
-<!-- Page Content -->
-<div class="container">
+<div id="content">
+    <div class="wrapper">
 
-    <div class="row">
-
-        <!-- Blog Entries Column -->
-        <div class="col-md-8">
-
-            <h1 class="page-header">
-                Page Heading
-                <small>Secondary Text</small>
-            </h1>
-
-            <?php foreach ($articles as $article) : ?>
-                <!-- First Blog Post -->
-                <h2>
-                    <a href="/article.php?id=<?= $article->id ?>"><?= $article->title ?></a>
-                </h2>
-                <?php $user = (new \App\Model\Users())->find('id' , $article->user_id) ?>
-                <p class="lead">
-                    by <a href="index.php"><?= $user->name ?></a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on <?= \Carbon\Carbon::parse($article->created_at) ?></p>
-                <hr>
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                <hr>
-                <p><?= substr($article->body , 0 , 150) ?></p>
-                <a class="btn btn-primary" href="/article.php?id=<?= $article->id ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                <hr>
-            <?php endforeach; ?>
-
-
-        </div>
-
-        <!-- Blog Sidebar Widgets Column -->
-        <div class="col-md-4">
-
-            <!-- Blog Search Well -->
-            <div class="well">
-                <h4>Blog Search</h4>
-                <div class="input-group">
-                    <input type="text" class="form-control">
-                    <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                        </span>
+        <?php foreach ($articles as $article) : ?>
+            <!-- Article -->
+            <div class="article">
+                <div class="image"><a href="/article.php?id=<?= $article->id ?>"><img src="https://dummyimage.com/120x120/f3f3f3/999999.jpg&text=Thumbnail" alt="dummy"></a></div>
+                <div class="section">
+                    <a href="/article.php?id=<?= $article->id ?>" class="article-title"><?= $article->title ?></a>
+                    <div class="article-info">
+                        <?php $user = (new \App\Model\Users())->find('id', $article->user_id) ?>
+                        <span class="article-info-title">Written by: </span><span><?= $user->name ?></span>
+                        <span class="article-info-title">Posted in: </span><span><?= \Carbon\Carbon::parse($article->created_at) ?></span>
+                    </div>
+                    <div class="article-short-content">
+                        <p><?= substr($article->body , 0 , 200) ?></p>
+                    </div>
+                    <a href="/article.php?id=<?= $article->id ?>" class="btn">Read More</a>
                 </div>
-                <!-- /.input-group -->
             </div>
+        <?php endforeach; ?>
 
-            <!-- Side Widget Well -->
-            <div class="well">
-                <h4>Side Widget Well</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
-            </div>
-
-        </div>
 
     </div>
-    <!-- /.row -->
-
-    <hr>
-
-    <!-- Footer -->
-    <footer>
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; Your Website 2014</p>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <!-- /.row -->
-    </footer>
-
+    <?php require("./templates/sidebar.php"); ?>
 </div>
-<!-- /.container -->
+<?php require("./templates/footer.php"); ?>
