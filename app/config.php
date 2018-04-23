@@ -2,7 +2,7 @@
 
 return [
     'db' => [
-        'database' => 'simple_blog',
+        'database' => 'my_weblog',
         'username' => 'root',
         'password' => 'saeed'
     ]

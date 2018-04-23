@@ -1,25 +1,24 @@
 <?php namespace App\Model;
 
-
 class DB
 {
     protected $pdo;
     protected $table;
     protected $selectables = [];
     protected $whereClause = [];
-    protected $limit;
     protected $stmt;
+    protected $limit;
     protected $bind = [];
     protected $fetchType = 'fetchAll';
     protected $fetchMode = \PDO::FETCH_OBJ;
 
     public function __construct()
     {
-        $config = require __DIR__ . '/../config.php';
+        $config = require __DIR__ ."/../config.php";
         try {
-            $this->pdo = new \PDO("mysql:host=127.0.0.1;dbname={$config['db']['database']}",$config['db']['username'] , $config['db']['password']);
+            $this->pdo = new \PDO("mysql:host=127.0.0.1;dbname={$config['db']['database']}",$config['db']['username'],$config['db']['password']);
         } catch (\Exception $e) {
-            die('Error : ' . $e->getMessage());
+            die("Error : " . $e->getMessage());
         }
     }
 
@@ -41,12 +40,11 @@ class DB
         return $this;
     }
 
-
-    public function where($name , $value , $operator = '=')
+    public function where($name, $value, $operator = '=')
     {
         $this->wheres("$name $operator :$name");
 
-        if($operator == 'LIKE')
+        if ($operator == 'LIKE')
             $this->bind[$name] = '%' . $value . '%';
         else
             $this->bind[$name] = $value;
@@ -64,32 +62,32 @@ class DB
     {
         $query[] = "SELECT";
 
-        if(empty($this->selectables))
+        if (empty($this->selectables))
             $query[] = "*";
         else
-            $query[] = join(', ' , $this->selectables);
+            $query[] = join (", ", $this->selectables);
 
         $query[] = "FROM";
-        $query[] = $this->table;
+        $query[]= $this->table;
 
-        if(! empty($this->whereClause)) {
+        if (! empty($this->whereClause)) {
             $query[] = $this->addWhereToQuery();
         }
 
-        if(! empty($this->limit)) {
+        if (! empty($this->limit)) {
             $query[] = "LIMIT";
             $query[] = $this->limit;
         }
 
-        $this->stmt = $this->pdo->prepare(join(' ',$query));
+        $this->stmt = $this->pdo->prepare(join(' ', $query));
         $this->bindValue();
         $this->stmt->execute();
         return $this;
     }
 
-    public function find($name , $value)
+    public function find($name, $value)
     {
-        return $this->select()->where($name , $value)->first();
+        return $this->select()->where($name, $value)->first();
     }
 
     public function first()
@@ -110,15 +108,17 @@ class DB
         return $this->select()->get();
     }
 
-    protected function fetch()
+    public function fetch()
     {
-        return  $this->stmt->{($this->fetchType == 'fetchAll') ? 'fetchAll' : 'fetch'}($this->fetchMode);
+        return $this->stmt->{($this->fetchType == 'fetchAll') ? 'fetchAll' : 'fetch'}($this->fetchMode);
     }
+
+
 
     public function create($data)
     {
         $field = join(', ', array_keys($data));
-        $param = ':'. join(', :' , array_keys($data));
+        $param = ':' . join(', :', array_keys($data));
 
         $this->stmt = $this->pdo->prepare("INSERT INTO $this->table ($field) VALUES ($param)");
 
@@ -126,17 +126,17 @@ class DB
         $this->bindValue();
 
         return $this->stmt->execute();
+
     }
 
-    public function update($id , $data)
+    public function update($id, $data)
     {
-        $object = $this->find('id' , $id);
-        if(!$object)
-            throw new \Exception("this id not exist in $this->table table");
-
+        $object = $this->find('id', $id);
+        if (!$object)
+            throw new \Exception("this id doesn't exists in $this->table table!");
         $fieldForUpdate = $this->fieldForUpdate($data);
         $this->stmt = $this->pdo->prepare("UPDATE {$this->table} SET {$fieldForUpdate} WHERE id = :id");
-        $this->bind = array_merge($data , ['id'=> $id]);
+        $this->bind = array_merge($data, ['id' => $id]);
         $this->bindValue();
 
         return $this->stmt->execute();
@@ -144,12 +144,11 @@ class DB
 
     public function delete($id)
     {
-        $object = $this->find('id' , $id);
+        $object = $this->find('id', $id);
         if(!$object)
-            throw new \Exception("this id not exist in $this->table table");
-
+            throw new \Exception("This id doesn't exists in $this->table table!");
         $this->stmt = $this->pdo->prepare("DELETE FROM $this->table WHERE id = :id");
-        $this->stmt->bindValue(':id' , $id);
+        $this->stmt->bindValue(':id', $id);
 
         return $this->stmt->execute();
     }
@@ -157,7 +156,7 @@ class DB
     private function bindValue()
     {
         foreach ($this->bind as $key => $value) {
-            $this->stmt->bindValue(":$key" , $value);
+            $this->stmt->bindValue(":$key", $value);
         }
     }
 
@@ -165,21 +164,20 @@ class DB
     {
         $query = [];
         $query[] = "WHERE";
-        foreach ($this->whereClause as $key => $where) {
-            if($key !=0 )
+        foreach($this->whereClause as $key => $where) {
+            if ($key != 0)
                 $query[] = "AND";
             $query[] = $where;
         }
-
-        return join(' ', $query);
+        return join(" ", $query);
     }
 
     private function fieldForUpdate($data)
     {
         $field = [];
-        foreach (array_keys($data) as $name) {
+        foreach(array_keys($data) as $name) {
             $field[] = "$name = :$name";
         }
-        return join(', ' , $field);
+        return join(", ", $field);
     }
 }

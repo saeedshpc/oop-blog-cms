@@ -1,14 +1,14 @@
 <?php namespace App\Contracts;
 
-
 interface RequestInterface
 {
+
     /**
-     * @param $filed
+     * @param $field
      * @param bool $post
      * @return mixed
      */
-    public function input($filed , $post = true);
+    public function input($field, $post = true);
 
     /**
      * @param bool $post

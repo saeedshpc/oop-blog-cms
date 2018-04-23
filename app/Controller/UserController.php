@@ -1,8 +1,8 @@
 <?php namespace App\Controller;
 
-use App\Helper\Auth;
 use App\Model\Users;
 use Carbon\Carbon;
+use App\Helper\Auth;
 
 class UserController extends Controller
 {
@@ -10,63 +10,70 @@ class UserController extends Controller
     {
         parent::__construct();
 
-        if(checkLogin())
+        if (checkLogin())
             redirect();
     }
-
     public function register()
     {
-        if(! request()->isPost())
+        if (!request()->isPost())
             return;
 
         $rules = [
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|max:20',
-            'confirm_password' => 'confirm:password'
+            'confirm_password' => 'required|confirm:password'
         ];
 
-        if(! $this->validation(request()->all() , $rules)) {
+
+        if (!$this->validation(request()->all(), $rules)) {
             return;
         }
 
         $success = (new Users())->create([
             'name' => request('name'),
             'email' => request('email'),
-            'password' => password_hash(request('password') , PASSWORD_BCRYPT , ['cost' => 12]),
-            'created_at' => Carbon::now()
+            'password' => password_hash(request('password'), PASSWORD_BCRYPT, ['cost' => 12]),
+            'created_at' => carbon::now()
         ]);
 
-        $this->flash->success('عضویت شما با موفقیت انجام شد');
+        if ($success) {
+            // Auto login after register or verification for activating account
+        }
+
+        $this->flash->success("Your Registeration has been done successfully");
 
         redirect();
         return;
+
+
     }
+
     public function login()
     {
-        if(! request()->isPost())
+        if (!request()->isPost())
             return;
 
         $rules = [
             'email' => 'required|email',
-            'password' => 'required|min:6|max:20',
+            'password' => 'required|min:6|max:20'
         ];
 
-        if(! $this->validation(request()->all() , $rules)) {
+        if (! $this->validation(request()->all(), $rules)) {
             return;
         }
 
-        $user = (new Users())->find('email',request('email'));
+        $user = (new Users())->find('email', request('email'));
 
-        if(!$user) {
-            $this->flash->error('چنین ایمیلی وجود ندارد');
+        if (!$user) {
+            $this->flash->error("This email is not registered yet");
             return;
         }
 
-        $login = password_verify(request('password') , $user->password );
+        $login = password_verify(request('password'), $user->password);
 
-        if(!$login) {
-            $this->flash->error('پسورد اشتباه است');
+        if (!$login) {
+            $this->flash->error("Wrong password");
             return;
         }
 
@@ -74,10 +81,14 @@ class UserController extends Controller
         if(!empty(request('remember')))
             $remember = true;
 
-        Auth::login($user , $remember);
 
-        $this->flash->success('ورود شما با موفقیت انجام شد');
+        Auth::login($user, $remember);
+
+        $this->flash->success("Login done Successfully");
+
         redirect();
         return;
     }
+
+
 }
